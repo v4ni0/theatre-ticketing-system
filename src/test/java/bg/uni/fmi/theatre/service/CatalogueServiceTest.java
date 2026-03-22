@@ -25,7 +25,7 @@ class CatalogueServiceTest {
     }
 
     @Test
-    void addShowValidShowIsSaved() {
+    void testAddShowValidShowIsSaved() {
         Show show = new Show(showRepo.nextId(), "Hamlet", "Classic drama", Genre.DRAMA, 120, AgeRating.PG_16);
         service.addShow(show);
         Optional<Show> found = service.findShowById(show.id());
@@ -34,12 +34,12 @@ class CatalogueServiceTest {
     }
 
     @Test
-    void addShowNullShowThrows() {
+    void testAddShowNullShowThrows() {
         assertThrows(IllegalArgumentException.class, () -> service.addShow(null));
     }
 
     @Test
-    void searchShowsByTitleReturnsMatchingShows() {
+    void testSearchShowsByTitleReturnsMatchingShows() {
         service.addShow(new Show(showRepo.nextId(), "Hamlet", "Drama", Genre.DRAMA, 120, AgeRating.PG_16));
         service.addShow(new Show(showRepo.nextId(), "Othello", "Drama", Genre.DRAMA, 110, AgeRating.PG_16));
         service.addShow(new Show(showRepo.nextId(), "A Midsummer Night's Dream", "Comedy", Genre.COMEDY, 90, AgeRating.ALL));
@@ -47,9 +47,20 @@ class CatalogueServiceTest {
         assertEquals(1, results.size());
         assertEquals("Hamlet", results.get(0).title());
     }
+    @Test
+    void testSearchShowsByTitleReturnsMatchingShowsSecondPage() {
+        service.addShow(new Show(showRepo.nextId(), "Hamlet", "Drama", Genre.DRAMA, 120, AgeRating.PG_16));
+        service.addShow(new Show(showRepo.nextId(), "Hamlet2", "Drama", Genre.DRAMA, 120, AgeRating.PG_16));
+        service.addShow(new Show(showRepo.nextId(), "Othello", "Drama", Genre.DRAMA, 110, AgeRating.PG_16));
+        service.addShow(new Show(showRepo.nextId(), "A Midsummer Night's Dream", "Comedy", Genre.COMEDY, 90, AgeRating.ALL));
+        List<Show> results = service.searchShows("ham", null, 1 , 1);
+        System.out.println(results);
+        assertEquals(1, results.size());
+        assertEquals("Hamlet2", results.get(0).title());
+    }
 
     @Test
-    void searchShowsByGenreReturnsMatchingShows() {
+    void testSearchShowsByGenreReturnsMatchingShows() {
         service.addShow(new Show(showRepo.nextId(), "Hamlet", "Drama", Genre.DRAMA, 120, AgeRating.PG_16));
         service.addShow(new Show(showRepo.nextId(), "Chicago", "Musical", Genre.MUSICAL, 130, AgeRating.PG_12));
         List<Show> results = service.searchShows(null, Genre.MUSICAL, 0, 10);
@@ -58,14 +69,14 @@ class CatalogueServiceTest {
     }
 
     @Test
-    void searchShowsCaseInsensitiveReturnsResults() {
+    void testSearchShowsCaseInsensitiveReturnsResults() {
         service.addShow(new Show(showRepo.nextId(), "Hamlet", "Drama", Genre.DRAMA, 120, AgeRating.PG_16));
         List<Show> results = service.searchShows("HAMLET", null, 0, 10);
         assertEquals(1, results.size());
     }
 
     @Test
-    void searchShowsEmptyQueryReturnsAllShows() {
+    void testSearchShowsEmptyQueryReturnsAllShows() {
         service.addShow(new Show(showRepo.nextId(), "Hamlet", "Drama", Genre.DRAMA, 120, AgeRating.PG_16));
         service.addShow(new Show(showRepo.nextId(), "Chicago", "Musical", Genre.MUSICAL, 130, AgeRating.PG_12));
         List<Show> results = service.searchShows("", null, 0, 10);
@@ -73,24 +84,24 @@ class CatalogueServiceTest {
     }
 
     @Test
-    void searchShowsPageOutOfBoundsReturnsEmptyList() {
+    void testSearchShowsPageOutOfBoundsReturnsEmptyList() {
         service.addShow(new Show(showRepo.nextId(), "Hamlet", "Drama", Genre.DRAMA, 120, AgeRating.PG_16));
         List<Show> results = service.searchShows(null, null, 5, 10);
         assertTrue(results.isEmpty());
     }
 
     @Test
-    void searchShowsNegativePageThrows() {
+    void testSearchShowsNegativePageThrows() {
         assertThrows(IllegalArgumentException.class, () -> service.searchShows(null, null, -1, 10));
     }
 
     @Test
-    void searchShowsZeroSizeThrows() {
+    void testSearchShowsZeroSizeThrows() {
         assertThrows(IllegalArgumentException.class, () -> service.searchShows(null, null, 0, 0));
     }
 
     @Test
-    void searchShowsPaginationReturnsCorrectPage() {
+    void testSearchShowsPaginationReturnsCorrectPage() {
         for (int i = 1; i <= 8; i++) {
             service.addShow(new Show((long) i, "Show " + i, "Desc", Genre.DRAMA, 90, AgeRating.ALL));
         }
@@ -103,13 +114,13 @@ class CatalogueServiceTest {
     }
 
     @Test
-    void addPerformanceUnknownShow() {
+    void testAddPerformanceUnknownShow() {
         Performance p = new Performance(1L, 999L, 1L, LocalDateTime.now().plusDays(1), PerformanceStatus.SCHEDULED);
         assertThrows(IllegalArgumentException.class, () -> service.addPerformance(p));
     }
 
     @Test
-    void findPerformancesByShowValidShowReturnsPerformances() {
+    void testFindPerformancesByShowValidShowReturnsPerformances() {
         Show show = new Show(showRepo.nextId(), "Hamlet", "Drama", Genre.DRAMA, 120, AgeRating.PG_16);
         service.addShow(show);
         service.addPerformance(new Performance(perfRepo.nextId(), show.id(), 1L, LocalDateTime.now().plusDays(1), PerformanceStatus.SCHEDULED));

@@ -15,4 +15,6 @@ public interface ShowRepository {
     void deleteById(long id);
 
     List<Show> findAll();
+
+    long nextId();
 }

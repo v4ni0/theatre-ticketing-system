@@ -6,17 +6,21 @@ import bg.uni.fmi.theatre.domain.Show;
 import bg.uni.fmi.theatre.repository.PerformanceRepository;
 import bg.uni.fmi.theatre.repository.ShowRepository;
 import bg.uni.fmi.theatre.validation.Validator;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
+@Service
 public class CatalogueService {
     private static final int DEFAULT_PAGE_SIZE = 1;
     private final PerformanceRepository performanceRepository;
     private final ShowRepository showRepository;
     private final int pageSize;
 
+    @Autowired
     public CatalogueService(ShowRepository showRepository, PerformanceRepository performanceRepository) {
         this(showRepository, performanceRepository, DEFAULT_PAGE_SIZE);
     }
@@ -32,7 +36,6 @@ public class CatalogueService {
 
     public Show addShow(Show show) {
         Validator.validateNotNull(show, "show must not be null");
-
         return showRepository.save(show);
     }
 
@@ -43,17 +46,13 @@ public class CatalogueService {
     public List<Show> searchShows(String titleQuery, Genre genre, int page, int size) {
         Validator.validateNonNegativeNumber(page, "page must be non-negative");
         Validator.validatePositiveNumber(size, "size must be positive");
-        List<Show> shows = showRepository.findAll().stream()
+        return showRepository.findAll().stream()
             .filter(show -> titleQuery == null || show.title().toLowerCase().contains(titleQuery.toLowerCase()))
             .filter(show -> genre == null || show.genre() == genre)
             .sorted(Comparator.comparing(Show::title))
+            .skip(page * size)
+            .limit(size)
             .toList();
-        int fromIndex = page * size;
-        if (fromIndex >= shows.size()) {
-            return List.of();
-        }
-        int toIndex = Math.min(fromIndex + size, shows.size());
-        return shows.subList(fromIndex, toIndex);
     }
 
     public Performance addPerformance(Performance performance) {
