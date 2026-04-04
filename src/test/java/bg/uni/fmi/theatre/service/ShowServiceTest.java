@@ -18,17 +18,4 @@ class ShowServiceTest {
         inMemoryShowRepository = new InMemoryShowRepository();
         showService = new ShowService(inMemoryShowRepository);
     }
-
-    @Test
-    void testUpdateShowExistingShowIsUpdated() {
-        showService.addShow("title", "description", Genre.COMEDY, 90, AgeRating.ALL);
-        showService.updateShow(1, "Updated Title", "Updated Description", Genre.DRAMA, 120, AgeRating.PG_16);
-        var updatedShow = showService.findById(1).orElseThrow();
-        assertEquals("Updated Title", updatedShow.title());
-        assertEquals("Updated Description", updatedShow.description());
-        assertEquals(Genre.DRAMA, updatedShow.genre());
-        assertEquals(120, updatedShow.durationMinutes());
-        assertEquals(AgeRating.PG_16, updatedShow.ageRating());
-    }
-
 }

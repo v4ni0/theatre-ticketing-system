@@ -24,7 +24,7 @@ public record Show(long id, String title, String description, Genre genre, int d
     @Override
     public String toString() {
         return "Show{id=%d, title='%s', genre=%s, duration=%d min, ageRating=%s}"
-                .formatted(id, title, genre, durationMinutes, ageRating);
+            .formatted(id, title, genre, durationMinutes, ageRating);
     }
 
     @Override
