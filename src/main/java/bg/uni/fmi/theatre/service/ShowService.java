@@ -69,12 +69,13 @@ public class ShowService {
         showRepository.deleteById(id);
     }
 
-    public PageResponse<ShowResponse> searchShows(String titleQuery, Genre genre, int page, int size) {
+    public PageResponse<ShowResponse> searchShows(String titleQuery, Genre genre, Integer maxDurationMinutes, int page, int size) {
         Validator.validateNonNegativeNumber(page, "page must be non-negative");
         Validator.validatePositiveNumber(size, "size must be positive");
         List<ShowResponse> shows = showRepository.findAll().stream()
             .filter(show -> titleQuery == null || show.title().toLowerCase().contains(titleQuery.toLowerCase()))
             .filter(show -> genre == null || show.genre() == genre)
+            .filter(show -> maxDurationMinutes == null || show.durationMinutes() <= maxDurationMinutes)
             .sorted(Comparator.comparing(Show::title))
             .skip(page * size)
             .limit(size)

@@ -1,6 +1,7 @@
 package bg.uni.fmi.theatre.service;
 
 import bg.uni.fmi.theatre.domain.*;
+import bg.uni.fmi.theatre.exception.ValidationException;
 import bg.uni.fmi.theatre.repository.inmemory.InMemoryPerformanceRepository;
 import bg.uni.fmi.theatre.repository.inmemory.InMemoryShowRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -35,7 +36,7 @@ class CatalogueServiceTest {
 
     @Test
     void testAddShowNullShowThrows() {
-        assertThrows(IllegalArgumentException.class, () -> service.addShow(null));
+        assertThrows(ValidationException.class, () -> service.addShow(null));
     }
 
     @Test
@@ -92,12 +93,12 @@ class CatalogueServiceTest {
 
     @Test
     void testSearchShowsNegativePageThrows() {
-        assertThrows(IllegalArgumentException.class, () -> service.searchShows(null, null, -1, 10));
+        assertThrows(ValidationException.class, () -> service.searchShows(null, null, -1, 10));
     }
 
     @Test
     void testSearchShowsZeroSizeThrows() {
-        assertThrows(IllegalArgumentException.class, () -> service.searchShows(null, null, 0, 0));
+        assertThrows(ValidationException.class, () -> service.searchShows(null, null, 0, 0));
     }
 
     @Test
@@ -125,7 +126,7 @@ class CatalogueServiceTest {
         service.addShow(show);
         service.addPerformance(new Performance(perfRepo.nextId(), show.id(), 1L, LocalDateTime.now().plusDays(1), PerformanceStatus.SCHEDULED));
         service.addPerformance(new Performance(perfRepo.nextId(), show.id(), 1L, LocalDateTime.now().plusDays(2), PerformanceStatus.SCHEDULED));
-        List performances = service.findPerformancesByShow(show.id());
+        List<Performance> performances = service.findPerformancesByShow(show.id());
         assertEquals(2, performances.size());
     }
 }

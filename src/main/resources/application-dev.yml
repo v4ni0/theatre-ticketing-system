@@ -1,0 +1,13 @@
+server:
+  port: 8099
+
+theatre:
+  reservation-hold-minutes: 15
+  default-page-size: 10
+  log-level: INFO
+  log-file: logs/theatre.log
+
+logging:
+  level:
+    root: WARN
+    bg.uni.fmi.theatre: INFO
