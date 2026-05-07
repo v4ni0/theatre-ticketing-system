@@ -1,5 +1,7 @@
 package bg.uni.fmi.theatre.domain;
 
+import bg.uni.fmi.theatre.vo.PerformanceStatus;
+
 import java.time.LocalDateTime;
 import java.util.Objects;
 

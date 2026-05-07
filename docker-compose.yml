@@ -1,0 +1,14 @@
+services:
+  postgres:
+    image: postgres:17
+    container_name: theatre-pg
+    environment:
+      POSTGRES_USER: theatre
+      POSTGRES_PASSWORD: theatre
+      POSTGRES_DB: theatre
+    ports:
+      - "5432:5432"
+    volumes:
+      - theatre-pg-data:/var/lib/postgresql/data
+volumes:
+  theatre-pg-data:

@@ -1,6 +1,6 @@
 package bg.uni.fmi.theatre.service;
 
-import bg.uni.fmi.theatre.domain.Genre;
+import bg.uni.fmi.theatre.vo.Genre;
 import bg.uni.fmi.theatre.domain.Show;
 import bg.uni.fmi.theatre.dto.PageResponse;
 import bg.uni.fmi.theatre.dto.ShowRequest;
@@ -23,7 +23,7 @@ public class ShowService {
     }
 
     public ShowResponse addShow(ShowRequest request) {
-        Show show = new Show(showRepository.nextId(), request.getTitle(), request.getDescription(), request.getGenre(),
+        Show show = new Show(null, request.getTitle(), request.getDescription(), request.getGenre(),
             request.getDurationMinutes(), request.getAgeRating());
         return ShowResponse.from(showRepository.save(show));
     }
@@ -55,7 +55,8 @@ public class ShowService {
 
     public List<Show> findByGenre(Genre genre) {
         Validator.validateNotNull(genre, "genre must not be null");
-        return showRepository.findAll().stream().filter(s -> s.genre() == genre).toList();
+        return showRepository.findAll().stream()
+            .filter(s -> s.getGenre() == genre).toList();
     }
 
     public Optional<Show> findById(long id) {
@@ -73,10 +74,10 @@ public class ShowService {
         Validator.validateNonNegativeNumber(page, "page must be non-negative");
         Validator.validatePositiveNumber(size, "size must be positive");
         List<ShowResponse> shows = showRepository.findAll().stream()
-            .filter(show -> titleQuery == null || show.title().toLowerCase().contains(titleQuery.toLowerCase()))
-            .filter(show -> genre == null || show.genre() == genre)
-            .filter(show -> maxDurationMinutes == null || show.durationMinutes() <= maxDurationMinutes)
-            .sorted(Comparator.comparing(Show::title))
+            .filter(show -> titleQuery == null || show.getTitle().toLowerCase().contains(titleQuery.toLowerCase()))
+            .filter(show -> genre == null || show.getGenre() == genre)
+            .filter(show -> maxDurationMinutes == null || show.getDurationMinutes() <= maxDurationMinutes)
+            .sorted(Comparator.comparing(Show::getTitle))
             .skip(page * size)
             .limit(size)
             .map(ShowResponse::from)

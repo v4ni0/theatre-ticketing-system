@@ -1,41 +1,45 @@
 package bg.uni.fmi.theatre.domain;
 
-public record Show(long id, String title, String description, Genre genre, int durationMinutes, AgeRating ageRating) {
-    private static final int MAX_TITLE_LENGTH = 100;
+import bg.uni.fmi.theatre.vo.AgeRating;
+import bg.uni.fmi.theatre.vo.Genre;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-    public Show {
-        if (title == null || title.isBlank()) {
-            throw new IllegalArgumentException("Show title is required");
-        }
-        if (title.length() > MAX_TITLE_LENGTH) {
-            throw new IllegalArgumentException("Show title must be at most 100 characters");
-        }
-        if (durationMinutes <= 0) {
-            throw new IllegalArgumentException("Show durationMinutes must be greater than 0");
-        }
-        if (genre == null) {
-            throw new IllegalArgumentException("Show genre is required");
-        }
-        if (ageRating == null) {
-            throw new IllegalArgumentException("Show ageRating is required");
-        }
-    }
+@Entity
+@Table(name = "show")
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+public class Show {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-    @Override
-    public String toString() {
-        return "Show{id=%d, title='%s', genre=%s, duration=%d min, ageRating=%s}"
-            .formatted(id, title, genre, durationMinutes, ageRating);
-    }
+    @Column(nullable = false, length = 100)
+    private String title;
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Show s)) return false;
-        return id == s.id;
-    }
+    @Column(columnDefinition = "TEXT")
+    private String description;
 
-    @Override
-    public int hashCode() {
-        return Long.hashCode(id);
-    }
+    @Enumerated(EnumType.STRING)
+    private Genre genre;
+
+    @Column(name = "duration_minutes", nullable = false)
+    private int durationMinutes;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "age_rating")
+    private AgeRating ageRating;
+
 }

@@ -1,6 +1,6 @@
 package bg.uni.fmi.theatre.service;
 
-import bg.uni.fmi.theatre.domain.Genre;
+import bg.uni.fmi.theatre.vo.Genre;
 import bg.uni.fmi.theatre.domain.Performance;
 import bg.uni.fmi.theatre.domain.Show;
 import bg.uni.fmi.theatre.repository.PerformanceRepository;
@@ -47,9 +47,9 @@ public class CatalogueService {
         Validator.validateNonNegativeNumber(page, "page must be non-negative");
         Validator.validatePositiveNumber(size, "size must be positive");
         return showRepository.findAll().stream()
-            .filter(show -> titleQuery == null || show.title().toLowerCase().contains(titleQuery.toLowerCase()))
-            .filter(show -> genre == null || show.genre() == genre)
-            .sorted(Comparator.comparing(Show::title))
+            .filter(show -> titleQuery == null || show.getTitle().toLowerCase().contains(titleQuery.toLowerCase()))
+            .filter(show -> genre == null || show.getGenre() == genre)
+            .sorted(Comparator.comparing(Show::getTitle))
             .skip(page * size)
             .limit(size)
             .toList();

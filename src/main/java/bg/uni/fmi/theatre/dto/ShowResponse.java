@@ -1,7 +1,7 @@
 package bg.uni.fmi.theatre.dto;
 
-import bg.uni.fmi.theatre.domain.AgeRating;
-import bg.uni.fmi.theatre.domain.Genre;
+import bg.uni.fmi.theatre.vo.AgeRating;
+import bg.uni.fmi.theatre.vo.Genre;
 import bg.uni.fmi.theatre.domain.Show;
 
 public record ShowResponse(
@@ -14,12 +14,12 @@ public record ShowResponse(
 ) {
     public static ShowResponse from(Show show) {
         return new ShowResponse(
-            show.id(),
-            show.title(),
-            show.description(),
-            show.genre(),
-            show.ageRating(),
-            show.durationMinutes()
+            show.getId(),
+            show.getTitle(),
+            show.getDescription(),
+            show.getGenre(),
+            show.getAgeRating(),
+            show.getDurationMinutes()
         );
     }
 }

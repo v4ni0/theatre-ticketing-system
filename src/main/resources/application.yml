@@ -3,6 +3,25 @@ spring:
     name: theatre-ticketing
   profiles:
     active: dev
+  datasource:
+    url: jdbc:postgresql://localhost:5432/postgres?currentSchema=theatre
+    username: theatre
+    password: theatre
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        default_schema: theatre
+        format_sql: true
+    show-sql: true
+
+  liquibase:
+    change-log: classpath:db/changelog/db.changelog-master.yaml
+    default-schema: theatre
 
 server:
   port: 8099

@@ -1,8 +1,6 @@
 package bg.uni.fmi.theatre.repository.inmemory;
 
 import bg.uni.fmi.theatre.domain.Show;
-import bg.uni.fmi.theatre.repository.ShowRepository;
-import org.springframework.stereotype.Repository;
 
 import java.util.HashMap;
 import java.util.List;
@@ -10,43 +8,36 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicLong;
 
-@Repository
-public class InMemoryShowRepository implements ShowRepository {
+public class InMemoryShowRepository {
     private final Map<Long, Show> shows;
-    private final AtomicLong isSequence = new AtomicLong(1);
+    private final AtomicLong idSequence = new AtomicLong(1);
 
     public InMemoryShowRepository() {
-        this.shows = new HashMap<Long, Show>();
+        this.shows = new HashMap<>();
     }
 
-    @Override
     public Show save(Show show) {
-        shows.put(show.id(), show);
+        shows.put(show.getId(), show);
         return show;
     }
 
-    @Override
-    public Optional<Show> findById(long id) {
+    public Optional<Show> findById(Long id) {
         return Optional.ofNullable(shows.get(id));
     }
 
-    @Override
-    public boolean existsById(long id) {
+    public boolean existsById(Long id) {
         return shows.containsKey(id);
     }
 
-    @Override
-    public void deleteById(long id) {
+    public void deleteById(Long id) {
         shows.remove(id);
     }
 
-    @Override
     public List<Show> findAll() {
         return shows.values().stream().toList();
     }
 
-    @Override
     public long nextId() {
-        return isSequence.getAndIncrement();
+        return idSequence.getAndIncrement();
     }
 }

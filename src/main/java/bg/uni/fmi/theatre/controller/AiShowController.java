@@ -1,6 +1,6 @@
 package bg.uni.fmi.theatre.controller;
 
-import bg.uni.fmi.theatre.domain.Genre;
+import bg.uni.fmi.theatre.vo.Genre;
 import bg.uni.fmi.theatre.dto.PageResponse;
 import bg.uni.fmi.theatre.dto.SearchFiltersResponse;
 import bg.uni.fmi.theatre.dto.ShowResponse;
