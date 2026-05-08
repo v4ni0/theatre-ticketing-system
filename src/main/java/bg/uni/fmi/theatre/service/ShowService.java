@@ -2,9 +2,9 @@ package bg.uni.fmi.theatre.service;
 
 import bg.uni.fmi.theatre.vo.Genre;
 import bg.uni.fmi.theatre.domain.Show;
-import bg.uni.fmi.theatre.dto.PageResponse;
-import bg.uni.fmi.theatre.dto.ShowRequest;
-import bg.uni.fmi.theatre.dto.ShowResponse;
+import bg.uni.fmi.theatre.dto.response.PageResponse;
+import bg.uni.fmi.theatre.dto.request.ShowRequest;
+import bg.uni.fmi.theatre.dto.response.ShowResponse;
 import bg.uni.fmi.theatre.exception.NotFoundException;
 import bg.uni.fmi.theatre.repository.ShowRepository;
 import bg.uni.fmi.theatre.validation.Validator;
@@ -23,8 +23,11 @@ public class ShowService {
     }
 
     public ShowResponse addShow(ShowRequest request) {
-        Show show = new Show(null, request.getTitle(), request.getDescription(), request.getGenre(),
-            request.getDurationMinutes(), request.getAgeRating());
+        Show show = new Show(request.getTitle(),
+                request.getDescription(),
+                request.getGenre(),
+                request.getDurationMinutes(),
+                request.getAgeRating());
         return ShowResponse.from(showRepository.save(show));
     }
 
@@ -42,7 +45,6 @@ public class ShowService {
             throw new NotFoundException("Show not found: " + id);
         }
         Show updated = new Show(
-            id,
             request.getTitle(),
             request.getDescription(),
             request.getGenre(),

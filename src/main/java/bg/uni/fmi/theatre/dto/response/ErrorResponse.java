@@ -1,4 +1,4 @@
-package bg.uni.fmi.theatre.dto;
+package bg.uni.fmi.theatre.dto.response;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

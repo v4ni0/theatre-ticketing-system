@@ -1,9 +1,10 @@
 package bg.uni.fmi.theatre.controller;
 
 import bg.uni.fmi.theatre.exception.NotFoundException;
-import bg.uni.fmi.theatre.dto.ErrorResponse;
+import bg.uni.fmi.theatre.dto.response.ErrorResponse;
 import bg.uni.fmi.theatre.exception.ValidationException;
 import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -18,6 +19,7 @@ public class GlobalExceptionHandler {
     private static final int NOT_FOUND_CODE = 404;
     private static final int VALIDATION_ERROR_CODE = 400;
     private static final int GENERAL_SERVER_ERROR_CODE = 500;
+    private static final int CONFLICT_ERROR_CODE = 409;
 
     @ExceptionHandler(NotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
@@ -44,5 +46,14 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ErrorResponse handleGeneralException(Exception ex, HttpServletRequest request) {
         return new ErrorResponse(GENERAL_SERVER_ERROR_CODE, "An unexpected error occurred: " + ex.getMessage(), request.getRequestURI());
+    }
+
+    @ExceptionHandler(OptimisticLockingFailureException.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public ErrorResponse handleOptimisticLock(OptimisticLockingFailureException ex,
+                                              HttpServletRequest request) {
+        return new ErrorResponse(CONFLICT_ERROR_CODE,
+                "The resource was modified by another request. Please retry.",
+                request.getRequestURI());
     }
 }

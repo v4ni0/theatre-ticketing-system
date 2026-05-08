@@ -1,11 +1,11 @@
 package bg.uni.fmi.theatre.controller;
 
 import bg.uni.fmi.theatre.vo.Genre;
-import bg.uni.fmi.theatre.dto.PageResponse;
-import bg.uni.fmi.theatre.dto.SearchFiltersResponse;
-import bg.uni.fmi.theatre.dto.ShowResponse;
-import bg.uni.fmi.theatre.dto.ShowComparisonResponse;
-import bg.uni.fmi.theatre.dto.ShowSummaryResponse;
+import bg.uni.fmi.theatre.dto.response.PageResponse;
+import bg.uni.fmi.theatre.dto.response.SearchFiltersResponse;
+import bg.uni.fmi.theatre.dto.response.ShowResponse;
+import bg.uni.fmi.theatre.dto.response.ShowComparisonResponse;
+import bg.uni.fmi.theatre.dto.response.ShowSummaryResponse;
 import bg.uni.fmi.theatre.service.AiShowService;
 import bg.uni.fmi.theatre.service.ShowService;
 import io.swagger.v3.oas.annotations.Operation;

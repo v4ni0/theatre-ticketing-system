@@ -1,4 +1,4 @@
-package bg.uni.fmi.theatre.dto;
+package bg.uni.fmi.theatre.dto.response;
 
 public record ShowComparisonResponse(
     String show1Title,

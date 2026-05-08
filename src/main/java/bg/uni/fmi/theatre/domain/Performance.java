@@ -1,40 +1,50 @@
 package bg.uni.fmi.theatre.domain;
 
+import bg.uni.fmi.theatre.validation.Validator;
 import bg.uni.fmi.theatre.vo.PerformanceStatus;
+import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
-import java.util.Objects;
 
-public record Performance(Long id, Long showId, Long hallId, LocalDateTime startTime, PerformanceStatus status) {
-    public Performance {
-        if (id == null) {
-            throw new IllegalArgumentException("id cannot be null");
-        }
-        if (showId == null) {
-            throw new IllegalArgumentException("showId cannot be null");
-        }
-        if (hallId == null) {
-            throw new IllegalArgumentException("hallId cannot be null");
-        }
-    }
+@Entity
+@Getter
+@Setter
+@Table(name = "performance")
+@NoArgsConstructor
+public class Performance {
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (!(o instanceof Performance)) {
-            return false;
-        }
-        return Objects.equals(id, ((Performance) o).id);
-    }
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(id);
-    }
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "show_id", nullable = false)
+    private Show show;
 
-    @Override public String toString() {
-        return "Performance{id=" + id + ", showId=" + showId + ", start=" + startTime + ", status=" + status + "}";
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "hall_id", nullable = false)
+    private Hall hall;
+
+    @Column(name = "start_time", nullable = false)
+    private LocalDateTime startTime;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private PerformanceStatus status;
+
+    @Version
+    private Long version;
+
+    public Performance(Show show, Hall hall, LocalDateTime startTime) {
+        Validator.validateNotNull(show, "show is required");
+        Validator.validateNotNull(hall, "hall is required");
+        Validator.validateNotNull(startTime, "startTime is required");
+        this.show = show;
+        this.hall = hall;
+        this.startTime = startTime;
+        this.status = PerformanceStatus.SCHEDULED;
     }
 }

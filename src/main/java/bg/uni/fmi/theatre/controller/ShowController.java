@@ -1,7 +1,7 @@
 package bg.uni.fmi.theatre.controller;
 
-import bg.uni.fmi.theatre.dto.ShowRequest;
-import bg.uni.fmi.theatre.dto.ShowResponse;
+import bg.uni.fmi.theatre.dto.request.ShowRequest;
+import bg.uni.fmi.theatre.dto.response.ShowResponse;
 import bg.uni.fmi.theatre.service.ShowService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;

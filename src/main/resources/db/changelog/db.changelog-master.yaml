@@ -3,3 +3,9 @@ databaseChangeLog:
       file: db/changelog/changes/001-create-show-table.yaml
   - include:
       file: db/changelog/changes/002-create-hall-table.sql
+  - include:
+      file: db/changelog/changes/003-create-performance-table.sql
+  - include:
+      file: db/changelog/changes/004-add-version-columns.sql
+  - include:
+      file: db/changelog/changes/005-create-reservation-table.sql

@@ -1,9 +1,9 @@
 package bg.uni.fmi.theatre.service;
 
-import bg.uni.fmi.theatre.dto.SearchFiltersResponse;
-import bg.uni.fmi.theatre.dto.ShowComparisonResponse;
-import bg.uni.fmi.theatre.dto.ShowResponse;
-import bg.uni.fmi.theatre.dto.ShowSummaryResponse;
+import bg.uni.fmi.theatre.dto.response.SearchFiltersResponse;
+import bg.uni.fmi.theatre.dto.response.ShowComparisonResponse;
+import bg.uni.fmi.theatre.dto.response.ShowResponse;
+import bg.uni.fmi.theatre.dto.response.ShowSummaryResponse;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.stereotype.Service;
 

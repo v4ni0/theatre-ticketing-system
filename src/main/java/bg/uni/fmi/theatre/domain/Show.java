@@ -1,5 +1,6 @@
 package bg.uni.fmi.theatre.domain;
 
+import bg.uni.fmi.theatre.validation.Validator;
 import bg.uni.fmi.theatre.vo.AgeRating;
 import bg.uni.fmi.theatre.vo.Genre;
 import jakarta.persistence.Column;
@@ -19,8 +20,8 @@ import lombok.Setter;
 @Table(name = "show")
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 public class Show {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -41,5 +42,15 @@ public class Show {
     @Enumerated(EnumType.STRING)
     @Column(name = "age_rating")
     private AgeRating ageRating;
+
+    public Show(String title, String description, Genre genre, int durationMinutes, AgeRating ageRating) {
+        Validator.validateString(title, "Show title cannot be null or blank");
+        Validator.validatePositiveNumber(durationMinutes, "Show duration must be positive");
+        this.title = title;
+        this.description = description;
+        this.genre = genre;
+        this.durationMinutes = durationMinutes;
+        this.ageRating = ageRating;
+    }
 
 }

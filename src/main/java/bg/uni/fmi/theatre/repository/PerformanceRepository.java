@@ -1,18 +1,16 @@
 package bg.uni.fmi.theatre.repository;
 
 import bg.uni.fmi.theatre.domain.Performance;
+import bg.uni.fmi.theatre.domain.Show;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.Optional;
 
-public interface PerformanceRepository {
-    Performance save(Performance performance);
+@Repository
+public interface PerformanceRepository extends JpaRepository<Performance, Long> {
 
-    Optional<Performance> findById(Long id);
-
-    List<Performance> findAll();
+    List<Performance> findByShow(Show show);
 
     List<Performance> findByShowId(Long showId);
-
-    void deleteById(Long id);
 }
